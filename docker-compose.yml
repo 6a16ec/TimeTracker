@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  postgres:
+    container_name: seller_kit_postgres
+    restart: unless-stopped
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+  bot:
+    container_name: time_tracker_bot
+    restart: unless-stopped
+    build: ./
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - postgres
